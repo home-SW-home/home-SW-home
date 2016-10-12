@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $EUID -ne 1000 ]]; then
+  echo "Must be run by user pi!"
+  exit 1
+fi
+
+export PATH=$PATH:/opt/jdk1.8.0_92/bin:/home/pi/bin/
+
+cd ~/home-SW-home
+tmux new-session -d 'python inputs_listen.py'
+tmux new-window -d 'python outputs_apply.py'
+tmux new-window -d 'tail -n 0 -f /var/log/raw_inputs.csv | ./event_machine.clj'
+tmux new-window -d 'tail -n 0 -f /var/log/raw_inputs.csv'
+tmux new-window -d 'tail -n 0 -f /var/log/raw_outputs.csv'
+

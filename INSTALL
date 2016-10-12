@@ -1,0 +1,21 @@
+# install raspbian (don't forget to unzip):
+$ wget https://downloads.raspberrypi.org/raspbian_lite_latest
+$ gunzip raspbian_lite_latest
+$ dd if=2016-09-23-raspbian-jessie-lite.img of=/dev/sdb bs=1M
+
+# change default passwd (raspberry)
+$ ssh pi@raspberrypi
+$ passwd
+
+# consider changing /etc/apt/sources.list to archive.raspbian.org
+sudo nano /etc/apt/sources.list
+
+# get the sources of home-SW-home
+wget https://github.com/home-SW-home/home-SW-home/archive/master.zip
+unzip -j master.zip -d home-SW-home
+
+# run installation script:
+cd home-SW-home
+sudo sh install_home-SW-home_root.sh
+
+
