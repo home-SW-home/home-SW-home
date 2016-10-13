@@ -5,15 +5,26 @@
 
 (println "Ready...")
 (def out (agent *out*))
-(def mode-timeout 5000) ; in msec
+(def mode-timeout 1500) ; in msec
 (def close-enough 150) ; in msec
 (def inputs [16 17 18 19 20 21 22 23 24 25 26 27])
 (def orig_inputs inputs)
 (def outputs [2 3 4 5 6 7 8 9 10 11 12 13 14 15])
 (def allowed-inputs (set inputs))
 (def allowed-outputs (set outputs))
-; note: more outputs than inputs
-(def input-output-mapping (into {} (for [ n (range (count inputs)) ] [(keyword (str(nth inputs n))),(nth outputs n)])))
+(def input-output-mapping {:16 2,  ; sofa SW 1 (right) -> sofa main light
+                           :17 3,  ; sofa SW 2 -> sofa reading light
+                           :18 4,  ; sofa SW 3 -> HAI plug (piano light)
+                           :19 5,  ; sofa SW 4 -> HAJ plug (radio)
+                           :20 6,  ;
+                           :21 7,  ;
+                           :22 11, ; entrance right SW -> kitchen main light
+                           :23 12, ; entrance left  SW -> table main light
+                           :24 8,  ;
+                           :25 11, ; sink SW left  -> kitchen main light
+                           :26 11, ; sink SW right ->
+                           :27 9   ;
+                          })
 ; start with all gpio states off
 (def gpio-states (into {} (for [ n (range (count outputs))] [(keyword (str (nth outputs n))),"unknown"])))
 
@@ -80,7 +91,8 @@
    (def t (sorted-set i1 i2))
    ;(println t)
    (case t
-     #{16,17} #{2,3,4,5,6,7}
+     #{16,17} #{2,3,4,5,11,12} ; advanced using sofa SW 1+2
+     #{22,23} #{2,3,4,5,11,12} ; advanced using entrance SW L+R
      #{}
    )
   )
@@ -114,30 +126,12 @@
  )
 )
 
-(defn shuffle-mapping
-   "shaffle the input to output mapping"
-   []
-   (def inputs (shuffle inputs))
-   (def input-output-mapping (into {} (for [ n (range (count inputs)) ]
-                                      [(keyword (str(nth inputs n))),(nth outputs n)])))
-)
-
-(defn un-shuffle-mapping
-   "revert the shaffle of the input to output mapping"
-   []
-   (def inputs orig_inputs)
-   (def input-output-mapping (into {} (for [ n (range (count inputs)) ]
-                                      [(keyword (str(nth inputs n))),(nth outputs n)])))
-)
-
 (defn action-per-set
  "for each special code - preform action or generate pre programmed outputs"
  [s]
  (case s
-  [18 17 16] (gen-outputs-from-set [2 3 "1000" -2 -3]) ; turn on 2 and 3, sleep 1 sec, turn off 2 and 3
-  [16 17 18] (gen-outputs-from-set [4 "500" -4 "1000" 4 "500" -4]) ; blink on 4
-  [16] (shuffle-mapping) ; shuffle
-  [17] (un-shuffle-mapping) ; cancel shuffle
+  [18 17 16] (gen-outputs-from-set [2 3 "500" -2 -3 "500" 2 3]) ; turn on 2 and 3, sleep 0.5 sec, off and back on
+  [16 17 18] (gen-outputs-from-set [-2 -3 -11 -12 "500" 2 "500" -2 3 "500" -3 11 "500" -11 12 "500" -12 "500" 2 3 11 12]) ; runing lights
   (println (str "Unknown special command:" s))                  ; default is empty program
  )
 )
