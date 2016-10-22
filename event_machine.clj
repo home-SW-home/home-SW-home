@@ -14,15 +14,15 @@
 (def allowed-outputs (set outputs))
 (def input-output-mapping {:16 2,  ; sofa SW 1 (right) -> sofa main light
                            :17 3,  ; sofa SW 2 -> sofa reading light
-                           :18 4,  ; sofa SW 3 -> HAI plug (piano light)
-                           :19 5,  ; sofa SW 4 -> HAJ plug (radio)
-                           :20 6,  ;
-                           :21 7,  ;
-                           :22 11, ; entrance right SW -> kitchen main light
-                           :23 12, ; entrance left  SW -> table main light
+                           :18 15, ; sofa SW 3 -> sofa LED
+                           :19 14, ; sofa SW 4 -> table LED
+                           :20 11, ; entrance right SW -> kitchen main light
+                           :21 12, ; entrance left  SW -> table main light
+                           :22 11, ; sink SW left -> kitchen main light
+                           :23 10, ; sink SW right -> kitchen LED
                            :24 8,  ;
-                           :25 11, ; sink SW left  -> kitchen main light
-                           :26 11, ; sink SW right ->
+                           :25 4,  ;
+                           :26 5,  ;
                            :27 9   ;
                           })
 ; start with all gpio states off
@@ -91,8 +91,8 @@
    (def t (sorted-set i1 i2))
    ;(println t)
    (case t
-     #{16,17} #{2,3,4,5,11,12} ; advanced using sofa SW 1+2
-     #{22,23} #{2,3,4,5,11,12} ; advanced using entrance SW L+R
+     #{16,17} #{2,3,10,11,12,14,15} ; advanced using sofa SW 1+2
+     #{20,21} #{2,3,10,11,12,14,15} ; advanced using entrance SW L+R
      #{}
    )
   )
