@@ -17,8 +17,8 @@ apt-get install --reinstall -y python-pkg-resources
 apt-get install -y vim emacs24
 
 # install oracle java
-wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u92-b14/jdk-8u92-linux-arm32-vfp-hflt.tar.gz
-tar zxvf jdk-8u92-linux-arm32-vfp-hflt.tar.gz -C /opt
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-arm32-vfp-hflt.tar.gz
+tar zxvf jdk-8u111-linux-arm32-vfp-hflt.tar.gz -C /opt
 
 # update boot params
 echo "dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait bcm2708.vc_i2c_override=1" > /boot/cmdline.txt

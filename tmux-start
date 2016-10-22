@@ -5,7 +5,7 @@ if [[ $EUID -ne 1000 ]]; then
   exit 1
 fi
 
-export PATH=$PATH:/opt/jdk1.8.0_92/bin:/home/pi/bin/
+export PATH=$PATH:/opt/jdk1.8.0_111/bin:/home/pi/bin/
 
 cd ~/home-SW-home
 tmux new-session -d 'python inputs_listen.py'

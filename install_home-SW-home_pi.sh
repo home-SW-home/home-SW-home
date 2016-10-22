@@ -12,7 +12,7 @@ wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 chmod a+x lein
 
 # update PATH
-echo "export PATH=\$PATH:/opt/jdk1.8.0_92/bin:~/bin/" >> /home/pi/.bashrc
+echo "export PATH=\$PATH:/opt/jdk1.8.0_111/bin:~/bin/" >> /home/pi/.bashrc
 
 # update profiles.clj
 mkdir -p ~/.lein
@@ -22,7 +22,7 @@ echo "{:user {:plugins [[cider/cider-nrepl \"0.8.1\"] [lein-exec \"0.3.6\"] [pal
 cp /home/pi/home-SW-home/tmux.conf ~/.tmux.conf
 
 # run lein for the first time to download required libraries
-export PATH=$PATH:/opt/jdk1.8.0_92/bin:/home/pi/bin/
+export PATH=$PATH:/opt/jdk1.8.0_111/bin:/home/pi/bin/
 lein -v
 
 
