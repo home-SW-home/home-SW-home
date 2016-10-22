@@ -219,11 +219,13 @@
                    )
 
       output (fn [state]
-               (def history (first (get state :history)))
-               (def prev-gpio (history :state-data))
-               (def prev-state-kw (history :state-kw))
-               (def state-kw (state :state-kw))
-               (def gpio (state :state-data))
+               (let [
+                   history (first (get state :history))
+                   prev-gpio (history :state-data)
+                   prev-state-kw (history :state-kw)
+                   state-kw (state :state-kw)
+                   gpio (state :state-data)
+               ]
                ;(println prev-state-kw)
                ;(println (state :state-data))
                (if (or (= prev-state-kw :advanced) (= prev-state-kw :special))
@@ -243,6 +245,7 @@
                   )
                )
               )
+             )
 
       {:keys [state event event-data] :as sm}
       (event-machine
