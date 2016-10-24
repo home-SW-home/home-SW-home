@@ -5,11 +5,13 @@
 
 (println "Ready...")
 (def out (agent *out*))
-(def mode-timeout 1500) ; in msec
+(def mode-timeout 1000) ; in msec
 (def close-enough 150) ; in msec
 (def inputs [16 17 18 19 20 21 22 23 24 25 26 27])
 (def orig_inputs inputs)
-(def outputs [2 3 4 5 6 7 8 9 10 11 12 13 14 15])
+(def outputs             [ 2     3     4     5    6     7     8     9     10    11    12    13    14    15])
+(def outputs-start-state ["off" "off" "on"  "on" "off" "on"  "off" "off" "off" "off" "off" "off" "off" "off"])
+                         ; power plugs start on
 (def allowed-inputs (set inputs))
 (def allowed-outputs (set outputs))
 (def input-output-mapping {:16 2,  ; sofa SW 1 (right) -> sofa main light
@@ -126,6 +128,14 @@
  )
 )
 
+(defn default-outputs
+ "set all outputs to default state"
+ []
+ (doseq [n (range (count outputs))]
+  (write-output (str (now) "," (nth outputs n) "," (nth outputs-start-state n)))
+ )
+)
+
 (defn action-per-set
  "for each special code - preform action or generate pre programmed outputs"
  [s]
@@ -173,8 +183,8 @@
 
 
 
-; start with all off
-(all-outputs "off")
+; start with all in default states
+(default-outputs)
 
 
 ; state machine configuration
