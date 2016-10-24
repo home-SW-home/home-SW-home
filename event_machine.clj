@@ -186,6 +186,8 @@
 ; start with all in default states
 (default-outputs)
 
+; signal ready (blink lights to show system is accepting inputs)
+(gen-outputs-from-set [12 "500" -12 11 "500" -11 12 "500" -12])
 
 ; state machine configuration
 
