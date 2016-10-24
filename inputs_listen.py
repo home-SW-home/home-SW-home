@@ -9,6 +9,7 @@ class inputs_listener:
     button=None
     csv_file="/var/log/raw_inputs.csv"
     f=None
+    last_input=(0,0,"")
 
     def __init__(self):
         try:
@@ -26,14 +27,22 @@ class inputs_listener:
         self.log_csv('released')
 
     def log_csv(self, action):
-        csv=("%s,%s,%s\n" % (self.get_now(), self.button.pin, action))
-        #print(csv)
-        try:
-            self.f.write(csv)
-            self.f.flush()
-        except Exception as e:
-            print("%s" % str(e))
-            exit(-1)
+        now=self.get_now()
+        new_input=(now, self.button.pin, action)
+        # drop repeating identical events (within 100ms)
+        if ((new_input[1] == self.last_input[1]) and    # same gpio
+            (new_input[0] - self.last_input[0] < 100)): # almost same time
+            pass # noise
+        else:
+            csv=("%s,%s,%s\n" % new_input)
+            self.last_input=new_input
+            #print(csv)
+            try:
+                self.f.write(csv)
+                self.f.flush()
+            except Exception as e:
+                print("%s" % str(e))
+                exit(-1)
 
     def get_now(self):
         return int(time.time()*1000)
